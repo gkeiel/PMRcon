@@ -27,7 +27,7 @@ The discrete-time controllers are obtained by applying the Tustin discretization
 ## Features
 
 - **PMR control**: Implements discrete-time PMR action.
-- **Multiple resonant modes**: Supports multiple resonant modes at configurable harmonic frequencies.
+- **Multiple resonant modes**: Supports multiple modes at configurable harmonic frequencies.
 - **Configurable damping**: Allows adjustment of the damping factor for all resonant modes.
 - **Parameter configuration**: Provides methods to adjust PMR gains and additional parameters.
 
@@ -80,6 +80,10 @@ The controller provides the following methods:
 | `get_modes()` | Returns the number of configured resonant modes. |
 
 
-## Notes
+## Support the Project
 
-Improvements and additional control strategies may be added in future versions.
+Future versions may include improvements and additional features. 
+
+If you find this library useful, consider making a voluntary contribution solely to support this project's maintenance and further development. 
+
+[![Support the Project](https://img.shields.io/badge/Support%20the%20Project-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/gkeiel)
