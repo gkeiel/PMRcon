@@ -8,7 +8,8 @@
 class PMR {
     public:
         // constructor
-        PMR(float k_p, float k_r, float T_s, float w_0, float xi = 0.0f, const int harmonics[] = nullptr, int m = 0);
+        PMR(float k_p, float k_r, float T_s, float w_0, float xi = 0.0f, const int harmonics[] = nullptr, int m = 1);
+        PMR(float k_p, const float k_r[], float T_s, float w_0, const float xi[], const int harmonics[] = nullptr, int m = 1);
 
         // configuration
         void set_tuning(float k_p, float k_r);
@@ -22,7 +23,8 @@ class PMR {
 
         // get methods
         float get_kp();
-        float get_kr();
+        float get_kr(int i);
+        float get_xi(int i);
         int   get_modes();
 
     private:
@@ -37,6 +39,7 @@ class PMR {
         float k_p, k_r, T_s;
         float u_min, u_max;
         int m;
+        void initialize(float k_p, float T_s, float w_0, const int harmonics[], int m, const float k_r[], float k_r_common, const float xi[], float xi_common);
         void update_coefficients(int i);
 };
 #endif

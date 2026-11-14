@@ -16,17 +16,20 @@ float w_n  = 10.0f; // natural frequency (rad/s)
 float zeta = 0.7f; // damping ratio
 float v    = 0.0f;
 
-// PMR parameters
-const float k_p = 10.0f;
-const float k_r = 5.0f;
+// controller parameters
+const float k_p = 10;
 const float w_0 = 2.0f*PI/T;
-const float xi  = 0.001f;
-const int m = 4;
-const int harmonics[m] = {1, 3, 5, 7};
+const int harmonics[] = {1, 3, 5};
+const int m = sizeof(harmonics)/sizeof(harmonics[0]);
 
-// PMR
-// PMR pmr(k_p, k_r, T_s, w_0);                // default
-PMR pmr(k_p, k_r, T_s, w_0, xi, harmonics, m); // explicit
+// PMR - common resonant gain (default)
+//const float k_r = 10;
+//PMR pmr(k_p, k_r, T_s, w_0);
+
+// PMR - individual resonant gains
+const float k_r[] = {10, 8, 4};
+const float xi[]  = {0, 0.01, 0.01};
+PMR pmr(k_p, k_r, T_s, w_0, xi, harmonics, m);
 
 
 void reference(){

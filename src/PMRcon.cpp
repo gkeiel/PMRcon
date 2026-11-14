@@ -4,25 +4,35 @@
 
 PMR::PMR(float k_p, float k_r, float T_s, float w_0, float xi, const int harmonics[], int m)
 {
+    initialize(k_p, T_s, w_0, harmonics, 1, nullptr, k_r, nullptr, xi);
+}
+
+PMR::PMR(float k_p, const float k_r[], float T_s, float w_0, const float xi[], const int harmonics[], int m)
+{
+    initialize(k_p, T_s, w_0, harmonics, m, k_r, 0.0f, xi, 0.0f);
+}
+
+void PMR::initialize(float k_p, float T_s, float w_0, const int harmonics[], int m, const float k_r[], float k_r_common, const float xi[], float xi_common)
+{
     // set T_s
     this->T_s = (T_s > 0.0f) ? T_s : 0.01f;
 
     // set PMR parameters
     this->k_p = k_p;
-    this->k_r = k_r;
+    this->k_r = k_r_common;
     
     // validate parameters
     if (m < 0 || m > PMR_MAX_MODES) m = 0;
-    if (m > 0 && (w_0 <= 0.0f || xi < 0.0f || harmonics == nullptr)) m = 0;
+    if (m > 0 && w_0 < 0.0f) m = 0;
 
     // configure modes
     this->m = m;
 
     for (int i = 0; i < m; i++)
     {
-        mode[i].omega = harmonics[i]*w_0;
-        mode[i].xi    = xi;
-        mode[i].k_r   = k_r;
+        mode[i].omega = (harmonics != nullptr) ? harmonics[i]*w_0 : w_0;
+        mode[i].xi    = (xi  != nullptr) ? xi[i]  : xi_common;
+        mode[i].k_r   = (k_r != nullptr) ? k_r[i] : k_r_common;
         update_coefficients(i);
     }
     
@@ -129,5 +139,14 @@ void PMR::set_limit(float u_min, float u_max)
 
 // get methods
 float PMR::get_kp() { return k_p; }
-float PMR::get_kr() { return k_r; }
+float PMR::get_kr(int i)
+{
+    if (i < 0 || i >= m) return 0.0f;
+    return mode[i].k_r;
+}
+float PMR::get_xi(int i)
+{
+    if (i < 0 || i >= m) return 0.0f;
+    return mode[i].xi;
+}
 int   PMR::get_modes() {return m; }
